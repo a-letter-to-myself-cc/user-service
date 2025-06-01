@@ -1,0 +1,35 @@
+services:
+  user-db:
+    image: postgres:14
+    container_name: user-db
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - user-db-data:/var/lib/postgresql/data
+    networks:
+      - user-net
+    ports:
+      - "5432:5432"
+
+  user-service:
+    build: .
+    container_name: user-service
+    restart: always
+    env_file:
+      - .env.prod
+    ports:
+      - "8002:8002"
+    depends_on:
+      - user-db
+    networks:
+      - user-net
+
+networks:
+  user-net:
+    driver: bridge
+
+volumes:
+  user-db-data:
