@@ -1,6 +1,6 @@
 import requests
 
-AUTH_SERVICE_URL = "http://localhost:8001/auth"
+AUTH_SERVICE_URL = "http://auth-service:8001/auth"
 
 def verify_access_token(token):
     try:
