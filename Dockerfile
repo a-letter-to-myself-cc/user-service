@@ -8,6 +8,11 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
+# entrypoint 추가
+COPY entrypoint.sh /entrypoint.sh
+RUN apt-get update && apt-get install -y netcat-openbsd
+RUN chmod +x /entrypoint.sh
+
 # 환경변수들을 build 시점에 넘김
 ARG DB_NAME
 ARG DB_USER
@@ -28,4 +33,5 @@ ENV PORT=8002
 EXPOSE 8002
 
 # 서버 실행
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8002"]
+# CMD ["python", "manage.py", "runserver", "0.0.0.0:8002"]
+CMD ["./entrypoint.sh"]

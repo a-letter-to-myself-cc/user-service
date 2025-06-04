@@ -9,27 +9,35 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - user-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - user-net
+      - auth-share-net
     ports:
-      - "5432:5432"
+      - "5434:5432"
 
   user-service:
     build: .
     container_name: user-service
     restart: always
     env_file:
-      - .env.prod
+      - .env
     ports:
       - "8002:8002"
     depends_on:
       - user-db
     networks:
       - user-net
+      - auth-share-net
 
 networks:
   user-net:
     driver: bridge
-
+  auth-share-net:
+    external: true
 volumes:
   user-db-data:
