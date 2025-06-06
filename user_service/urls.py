@@ -15,7 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include
+from user.views import health_check
 
 urlpatterns = [
     path('user/', include('user.urls')),
+     path('health/', health_check),  
 ]
