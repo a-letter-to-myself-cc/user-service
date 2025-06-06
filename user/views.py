@@ -1,6 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
 
 from .models import UserProfile
 from .serializers import *
@@ -66,3 +68,8 @@ class UserCreateInternalView(APIView):
         serializer.is_valid(raise_exception=True)
         profile = serializer.save()
         return Response({"user_id": profile.user_id}, status=201)
+
+
+@api_view(['GET'])
+def health_check(request):
+    return JsonResponse({"status": "ok"})
