@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
+from django.views.decorators.http import require_GET
 
 from .models import UserProfile
 from .serializers import *
@@ -70,6 +71,6 @@ class UserCreateInternalView(APIView):
         return Response({"user_id": profile.user_id}, status=201)
 
 
-@api_view(['GET'])
+@require_GET
 def health_check(request):
     return JsonResponse({"status": "ok"})

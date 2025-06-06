@@ -1,7 +1,5 @@
 from django.urls import path
 from .views import *
-from . import views
-
 
 
 app_name = 'user'
@@ -16,7 +14,4 @@ urlpatterns = [
     # auth 마이페이지 요청 처리 : 요청 데이터 - 토큰, 내부 > auth 에게 토큰 유효성 검사 위임 >> 사용자 프로필 데이터 전송
     path('internal/get/', UserProfileGetView.as_view(), name='get_profile'),
     path('internal/users/', UserCreateInternalView.as_view(), name='internal_create_user'), # auth 회원가입 요청 > 대신 처리
-
-    #헬스체크
-    path('health/', views.health_check),
 ]
