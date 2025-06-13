@@ -12,7 +12,10 @@ from .services import verify_access_token
 
 class UserProfileUpdateView(APIView):
     def get(self, request):
-        token = request.COOKIES.get("access")
+        auth_header = request.headers.get("Authorization", "")
+        if not auth_header.startswith("Bearer "):
+            return Response({"detail": "Authorization header missing"}, status=401)
+        token = auth_header.split(" ")[1]
         if not token:
             return Response({"detail": "Authentication required."}, status=401)
 
@@ -25,7 +28,10 @@ class UserProfileUpdateView(APIView):
             return Response({"detail": str(e)}, status=400)
 
     def patch(self, request):
-        token = request.COOKIES.get("access")
+        auth_header = request.headers.get("Authorization", "")
+        if not auth_header.startswith("Bearer "):
+            return Response({"detail": "Authorization header missing"}, status=401)
+        token = auth_header.split(" ")[1]
         if not token:
             return Response({"detail": "Authentication required."}, status=401)
 
